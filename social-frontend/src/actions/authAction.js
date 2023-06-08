@@ -1,31 +1,37 @@
 import React from 'react'
 import axios from "axios";
 import { useSelector } from 'react-redux';
-
-
-
-
+import { Api_url } from '../apiurl';
+import { useToast } from '@chakra-ui/react';
 
 
 export const LoginAction=(data)=>async(dispatch)=> {
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
      dispatch({type:"LOGIN_REQUEST"})
      try{
-           const result=await axios.post("http://localhost:5000/apii/loginuser",{
+           const result=await axios.post(`${Api_url}/apii/loginuser`,{
             username:data.username,
             password:data.password
            })
 
+          console.log('result',result)
            if(result.data.success){
             dispatch({type:"LOGIN_SUCCESS",payload:result.data})
            } 
            else{
-            dispatch({type:"LOGIN_FAILED"})
+            dispatch({type:"LOGIN_FAILED",message:result.data.message})
            }
         
      }catch (error){
+      const toast=useToast
       dispatch({type:"LOGIN_FAILED"})
-        console.log(error)
+      toast({
+         title: `plas check your connection`,
+         position: "top",
+         status:"error",
+         isClosable: true,
+       });
+        
      }
 }
 
@@ -33,7 +39,7 @@ export const RegisterAction=(data)=>async(dispatch)=>{
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
       dispatch({type:"REGISTER_REQUEST"})
    try{
-       const result=await axios.post("http://localhost:5000/apii/registeruser",{
+       const result=await axios.post(`${Api_url}/apii/registeruser`,{
 
          username:data.username,
          firstName:data.firstName,
@@ -43,6 +49,7 @@ export const RegisterAction=(data)=>async(dispatch)=>{
 
        if(result.data.success){
             dispatch({type:'REGISTER_SUCCESS',payload:result.data})
+            
        }
         else{
             dispatch({type:"REGISTER_FAILED"})
@@ -58,7 +65,7 @@ export const followerData=(id)=>async(dispatch)=>{
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
    dispatch({type:"FOLLOWER_REQUEST"})
    try{
-      const response=await axios.post("http://localhost:5000/apii/getFollower",{
+      const response=await axios.post(`${Api_url}/apii/getFollower`,{
          id:id,
       },{
          headers:{
@@ -77,7 +84,7 @@ export const getUser=()=>async(dispatch)=>{
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
    dispatch({type:"GETUSER_REQUEST"})
    try{
-      const response=await axios.get("http://localhost:5000/apii/getallUser",{
+      const response=await axios.get(`${Api_url}/apii/getallUser`,{
          headers:{
             authorization:tok
          }
@@ -93,7 +100,7 @@ export const getUser=()=>async(dispatch)=>{
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
    dispatch({type:"FOLLOW_REQUEST"})
 try{
-   const response= await axios.post(`http://localhost:5000/apii/follow?id=${ids.id}`,{
+   const response= await axios.post(`${Api_url}/apii/follow?id=${ids.id}`,{
     currentUserId:ids.currId
    },{
       headers:{
@@ -123,4 +130,10 @@ export const currentUser=()=>async(dispatch)=>{
       
       dispatch({type:"CURRENTUSER_FAILED"})
    }
+}
+
+export const clearRedux=()=>async(dispatch)=>{
+   console.log("yaaaa")  
+    dispatch({type:"CLEAR_ALL"})
+    
 }

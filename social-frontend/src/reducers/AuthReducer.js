@@ -1,5 +1,4 @@
 
-import React from "react";
 
 const initialState={
      authdata:JSON.parse(localStorage.getItem("Auth"))
@@ -16,7 +15,7 @@ export const ReducerLogin=(state=initialState,action)=>{
             return{...state,authdata:action.payload,loading:false}  
             
         case "LOGIN_FAILED":
-            return{loading:false}
+            return{loading:false,success:"false",message:action.message}
             
         default :
         return {...state}   
@@ -101,4 +100,17 @@ export const ReducerRegister=(state,action)=>{
         default:
             return {...state}    
     }
+ }
+
+ const initialStates={}
+ export const clearReducer=(state=initialState,action)=>{
+   
+    switch(action.type){
+        case "CLEAR_ALL":
+            return state={}
+
+        default:
+            return state={}  
+    }
+
  }

@@ -27,7 +27,6 @@ export default function Suggestion() {
     <div
       style={{
         width: "100%",
-        
         justifyContent: "center",
         padding: "50px 0px 0px 10px",
       }}

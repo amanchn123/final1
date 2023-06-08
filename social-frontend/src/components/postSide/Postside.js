@@ -5,7 +5,7 @@ import Stories from './stories'
 
 export default function Postside() {
   return (
-    <div className='postside'>
+    <div className='postside' style={{width:"100%"}}>
       <Stories /> 
       <TimeLine />
     </div>

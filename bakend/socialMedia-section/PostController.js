@@ -16,10 +16,12 @@ const CreatePost=async(req,resp)=>{
 }
 
 const getPost=async(req,resp)=>{
+
     try{
        const {userId}=await req.query
+  
+       const getpost=await PostModel.find({userId:userId})
 
-       const getpost=await PostModel.find({userId:userId}).sort({createdAt:-1})
        resp.status(200).json(getpost)   
      
     }catch{
@@ -178,11 +180,8 @@ const storyTimeline=async(req,resp)=>{
   }catch{
     console.log("mystory")
     resp.json("unable to get")
-<<<<<<< HEAD
-=======
-
     resp.json("unable to gets")
->>>>>>> 9a63d2c (ff)
+
   }
 }
  

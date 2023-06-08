@@ -24,7 +24,6 @@ const registeruser=async(req,resp)=>{
         username:response.username, id:response._id
        },process.env.SECRET_KEY,{expiresIn:'1h'})
    
-
        resp.status(200).json({result,success:true,token})
      }catch (error){
        console.log("badd")
@@ -45,12 +44,12 @@ const loginUser=async(req,resp)=>{
           username:response.username, id:response._id
          },process.env.SECRET_KEY)
   
-        resp.json({response,success:true,token})
+        resp.json({response,success:true,token,message:""})
       }else{
-        resp.json({success:false})
+        resp.json({success:false,message:"unable to find user"})
       }
     }else{
-      resp.json({success:false})
+      resp.json({success:false,message:"unable to find user"})
     }
   }catch (error){
      resp.status(500).json({success:false})

@@ -79,7 +79,6 @@ const followuser=async(req,resp)=>{
   const {id}=req.query;
   const {currentUserId}=req.body;
 
-  
 try{
   if(id===currentUserId){
     resp.json("action prohibited")

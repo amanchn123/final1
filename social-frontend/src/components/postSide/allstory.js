@@ -11,6 +11,7 @@ export default function Allstory() {
   const params = new URLSearchParams(location.search);
   const id = params.get("id");
 
+  
   const dispatch = useDispatch();
 
   const userData = useSelector((state) =>
@@ -55,19 +56,20 @@ export default function Allstory() {
   const storyContentStyle = {
     width: 'auto',
     maxWidth: '100%',
-    maxHeight: '100%',
+    height: '80%',
     margin: 'auto',
-    backgroundColor:"green"
+    backgroundColor:"gray"
   };
 
   return (
     <div
       style={{
         display: "grid",
-        height: "100%",
+        height: "100vh",
         width: "100vw",
         placeContent: "center",
-        backgroundColor: "green",
+        backgroundColor: "gray",
+
       }}
     >
       {others
@@ -93,9 +95,9 @@ export default function Allstory() {
         })}
         <Stories 
                 stories={storr!==[]?storr:storrs}
-                defaultInterval={500}
+                defaultInterval={880}
                 width={432}
-                height={768}
+                height={700}
               />
     </div>
   );

@@ -91,7 +91,7 @@ export default function CreatePost() {
         height: "100%",
         width: "100%",
         display: "grid",
-        placeItems: "center",
+        // placeItems: "center",
         margin: "0%",
       }}
     >
@@ -187,7 +187,7 @@ export default function CreatePost() {
           height: "90%",
           display: disabled ? "grid" : "none",
           placeItems: "center",
-          backgroundColor:"greenyellow"
+          
         }}
       >
         <img style={{ height: "400px", width: "500px" }} src={pic}></img>

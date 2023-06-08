@@ -5,9 +5,11 @@ import Suggestion from './suggestion'
 
 export default function Home() {
   return (
-    <div className=' Home'>     
-      <Postside className='postSide' />
-      <div className='right' style={{borderLeft:"3px solid gray",backgroundColor:"rgb(52, 53, 54)"}}><Suggestion /></div>
+    <div className=' Home'> 
+    <div className='row'>
+      <div style={{backgroundColor:"gray",margin:"0%"}} className='col-sm-10'><Postside/></div>
+      <div className='col-sm-2 sugg'><Suggestion /></div>
+    </div>    
     </div>
   )
 }

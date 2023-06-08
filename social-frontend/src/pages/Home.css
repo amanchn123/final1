@@ -1,10 +1,20 @@
 .Home{
     position: absolute;
-    display: grid;
-    /* margin-left: 0px; */
-    grid-template-columns: 60rem 20rem;
+    display: flex;
+    /* margin-left: 250px; */
+    /* grid-template-columns: 60rem 20rem; */
     /* gap: 1rem; */
-    background-color: gray;
+    /* min-height: fit-content; */
+    /* overflow-y: scroll; */
+    /* height: 100vh; */
+    /* top: 1000%; */
+    overflow-y: scroll;
+    /* height: fit-content; */
 }
 
+@media(max-width:600px){
+    .sugg{
+        display: none;
+    }
+}
 

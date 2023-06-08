@@ -20,13 +20,15 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import axios from "axios";
-
+import { Api_url } from "../../apiurl";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function Profilepage() {
+  const[prof,setProf]=useState(false)
   const[pic,setPic]=useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
-  
+  const navigate=useNavigate()
  const pro=useRef()
    
  const getImg=async(e)=>{
@@ -47,17 +49,15 @@ export default function Profilepage() {
         .then(async(data) => {
           
             await setPic(data.url.toString());
-            const result=await axios.post(`http://localhost:5000/apii/updateprofile?id=${userData._id}`,{
+            const result=await axios.post(`${Api_url}/apii/updateprofile?id=${userData._id}`,{
               currentUser:userData._id,
               profilePic:data.url.toString()
             })
-          
-        })
+        }).then(()=>setProf(true))
     }else{
       alert("lllll")
     }
  }
-
 
 
   const dispatch = useDispatch();
@@ -94,9 +94,13 @@ export default function Profilepage() {
     <div
       className="row"
       style={{
+        position:"absolute",
+        height:"100vh",
+        overflowY:"scroll",
         backgroundColor: "black",
         padding: "10px",
-        margin: "0%",
+        minHeight:"100vh",
+        marginTop:"0%",
         borderLeft: "2px solid grey",
       }}
     >
@@ -106,6 +110,7 @@ export default function Profilepage() {
             className="row"
             style={{ justifyContent: "center", padding: "60px" }}
           >
+          
             <div 
               className="col-sm-3"
               style={{ display: "flex", placeContent: "end", padding: "20px", cursor:"pointer",borderRadius:"50%"}}
@@ -128,7 +133,8 @@ export default function Profilepage() {
         </Button>
       </span>
     </OverlayTrigger>
-    <Modal isOpen={isOpen} onClose={onClose}>
+
+    <Modal isOpen={isOpen} onClose={onClose}  >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader style={{display:"grid",justifyItems:"center"}}>change profile pic</ModalHeader>
@@ -250,7 +256,7 @@ export default function Profilepage() {
                       );
                     })
                   : "ede"
-                : "ccc"
+                : <h3 style={{color:"white",display:"flex",position:"absolute",left:"450px"}}>You havent post yet</h3>
               : "no image"}
           </div>
         </div>

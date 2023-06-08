@@ -12,11 +12,11 @@ con()
 app.use(cors({origin:"*"}))
 
 app.use(express.json())
-app.use(express.static(path.join(__dirname,'../social-frontend/build')))
+// app.use(express.static(path.join(__dirname,'../social-frontend/build')))
 
-app.get("*",(req,resp)=>{
-    resp.sendFile(path.join('../social-frontend/build/index.html'))
-})
+// app.get("*",(req,resp)=>{
+//     resp.sendFile(path.join('../social-frontend/build/index.html'))
+// })
 
 
 
@@ -28,4 +28,4 @@ app.use('/apii',register)
 app.use('/apii',require('./socialMedia-section/routes/postRoutes'))
 
 app.use('/you',require('./socialMedia-section/routes/you'))
-app.listen(5000,console.log('running succesfully'))
+app.listen(process.env.PORT || 5000,console.log('running succesfully'))

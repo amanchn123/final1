@@ -5,7 +5,7 @@ const verify=require('../JWT_verification')
 
 router.post('/newPost',verify,CreatePost)
 router.put('/likes/',verify,LikePost)
-router.get('/getpost',getPost)
+router.get('/getpost',verify,getPost)
 router.put('/updatepost',updatePost)
 router.post('/deletepost',verify,deletePost)
 router.get('/timelinePost',verify,timeLinePost)

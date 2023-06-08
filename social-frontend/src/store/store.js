@@ -1,4 +1,4 @@
-import { ReducerLogin,ReducerRegister,getFollower,getAllUserReducer,followUnfollow,currentUserReducer } from "../reducers/AuthReducer";
+import { ReducerLogin,ReducerRegister,getFollower,getAllUserReducer,followUnfollow,currentUserReducer,clearReducer } from "../reducers/AuthReducer";
 import { combineReducers } from "redux";
 import { configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage'
@@ -27,12 +27,20 @@ const rootreducer=combineReducers({
     currentUserReducer,
     currentPost,
     CreatestoryReduces,
-    getstoryReducer
+    getstoryReducer,
+    clearReducer
 })
 
-const persistedReducer=persistReducer(persistConfig,rootreducer)
 
-const storages = localStorage.getItem("Auth");
+const mainRoot=(state,action)=>{
+  if(action.type=="CLEAR_ALL"){
+    return state={...state,ReducerRegister:{}}
+  }
+
+  return rootreducer(state,action)
+}
+
+const persistedReducer=persistReducer(persistConfig,mainRoot)
 
 
 const store=configureStore(

@@ -17,110 +17,108 @@ import Profilepage from "./pages/profile/profilePage.js";
 import Profile from "./components/profile/profile";
 import Allstory from "./components/postSide/allstory";
 import Sidebar from "./sidebar";
-
-
-
+import UserData from "./pages/userData";
 
 function App() {
-  const [log,setLog]=useState(false)
+  const [log, setLog] = useState(false);
   let checkUser = useSelector((state) => state.ReducerLogin.authdata);
- const verify=async()=>{
-  
-  const tok=await JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:null
+  const verify = async () => {
+    const tok = (await JSON.parse(localStorage.getItem("Auth")))
+      ? JSON.parse(localStorage.getItem("Auth")).token
+      : null;
 
-
-    if(tok ){
-      setLog(true)
-    }else{
-      setLog(false)
+    if (tok) {
+      setLog(true);
+    } else {
+      setLog(false);
     }
- }
+  };
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
-
-  
   const [showcreate, setShowcreate] = useState(false);
-  
 
-  const options=  {
-    name: 'Enable both scrolling & backdrop (default)',
+  const options = {
+    name: "Enable both scrolling & backdrop (default)",
     scroll: true,
     backdrop: false,
-  }
+  };
 
-  const name="Enable both scrolling & backdrop" 
+  const name = "Enable both scrolling & backdrop";
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
 
-
-   useEffect(()=>{
-     verify()
-   })
-
+  useEffect(() => {
+    verify();
+  });
 
   return (
- <div style={{height:"100vh",width:"100vw"}}>
-          <ChakraProvider>
-          <div className="row" style={{position: "fixed",width:"100vw",margin:"0%",padding:"0%",display:"block"}}>
-          {log ? (
-        <Sidebar />
-      ) : (
-        ""
-      )}
-          </div>
-          <div onClick={handleClose} className="col-sm-10" style={{backgroundColor:"black",height:"100vh", marginLeft: "15.8%",position:"absolute"}}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  log ? <Navigate to="home" /> : <Navigate to="auth" />
-                }
-              />
-              <Route
-                path="/home"
-                element={log ? <Home /> : <Navigate to="../auth" />}
-              />
+    <div className="Apps row" style={{width:"103vw"}}>
+   
+        <div
+          className="col-sm-2 side"
+          style={{
+            // position: "fixed",
+            // width: "250px",
+            
+            
+          }}
+        >
+          {log ? <Sidebar /> : ""}
+        </div>
+        <div
+          onClick={handleClose}
+          className="col-sm-10 maincomp"
+          style={{
+            // marginLeft: log ? "250px" : "0px", 
+            width: "auto",
+            height:"",
+            // position: "fixed"
+            overflowY:"hidden"
+          }}
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={log ? <Navigate to="home" /> : <Navigate to="auth" />}
+            />
+            <Route
+              path="/home"
+              element={log ? <Home /> : <Navigate to="../auth" />}
+            />
 
-              <Route
-                path="/auth"
-                element={log ? <Navigate to="../home" /> : <Auth />}
-              />
+            <Route
+              path="/auth"
+              element={log ? <Navigate to="../home" /> : <Auth />}
+            />
 
-              <Route
-                path="/profilepage"
-                element={
-                  log ? <Profilepage /> : <Navigate to="../auth" />
-                }
-              />
-              <Route
-                path="/search"
-                element={
-                  log ? <Profile /> : <Navigate to="../auth" />
-                }
-              />
+            <Route
+              path="/profilepage"
+              element={log ? <Profilepage /> : <Navigate to="../auth" />}
+            />
+            <Route
+              path="/search"
+              element={log ? <Profile /> : <Navigate to="../auth" />}
+            />
 
-              <Route 
-                path="/story"
-                element={
-                  log?<Allstory />:<Navigate to='../auth' />
-                }
-              />
-              
+            <Route
+              path="/story"
+              element={log ? <Allstory /> : <Navigate to="../auth" />}
+            />
 
-              <Route
-                path="*"
-                element={
-                  log ? <Navigate to="/" /> : <Navigate to="../auth" />
-                }
-              />
-            </Routes>
-            </div>
+            <Route
+              path="/userData"
+              element={log ? <UserData /> : <Navigate to="../auth" />}
+            />
 
-          </ChakraProvider>
-          </div>  
-      
+            <Route
+              path="*"
+              element={log ? <Navigate to="/" /> : <Navigate to="../auth" />}
+            />
+          </Routes>
+        </div>
+    </div>
   );
 }
 

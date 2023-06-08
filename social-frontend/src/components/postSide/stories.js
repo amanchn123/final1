@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import 'react-slideshow-image/dist/styles.css'
+import { Slide } from 'react-slideshow-image';
 import './stories.css'
 import MyStory from "./allstory";
 import {
@@ -15,6 +17,8 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
+
+import { Api_url } from "../../apiurl";
 
 import axios from "axios";
 import Allstory from "./allstory";
@@ -74,7 +78,7 @@ export default function Stories() {
 
   const share = async () => {
     const result = await axios
-      .post(`http://localhost:5000/apii/createStory`, {
+      .post(`${Api_url}/apii/createStory`, {
         userId: userData._id,
         story: stor,
       })
@@ -96,11 +100,13 @@ export default function Stories() {
     setStor("");
   };
 
+
   const [size, setSize] = React.useState("md");
   const handleSizeClick = (newSize) => {
     setSize(newSize);
     onOpen();
   };
+
 
   useEffect(() => {
     dispatch(getstory(userId));
@@ -113,9 +119,10 @@ export default function Stories() {
   const others = storiess ? storiess.otherstory : [];
 
   const mystoriess = storiess ? storiess.mystory : [];
+  console.log("my",mystoriess)
 
   const clickss = () => {
-    if (mystoriess.length !== 0) {
+    if (mystoriess?mystoriess.length !== 0:"") {
       handleSizeClick("full");
     } else {
       onOpen();
@@ -125,14 +132,17 @@ export default function Stories() {
   const doc = [];
   const dup = [];
 
+
+  const images=[]
+
   return (
     <div
       className="mainbox"
-      style={{  height: "100%",width:"85%", display: "flex",marginLeft:"80px",overflowX:"auto"}}
+      style={{ height: "120px",width:"93%", display: "flex",overflowY:"hidden"}}
     >
       <div
-        className="stories"
-        style={{ display: "flex", width: "200%" }}
+        className="maincontainers"
+        style={{ display: "flex", width: "200%",height:"100%" }}
       >
       <div>
         <div
@@ -140,7 +150,7 @@ export default function Stories() {
           className="mystory"
           style={{
             marginRight:"8px",
-            height: "75%",
+            height: "64%",
             width: "80px",
             backgroundImage: `url(${pic})`,
             backgroundSize: "73px",
@@ -159,7 +169,7 @@ export default function Stories() {
             ref={storyref}
           ></input>
           <span style={{}}>+</span>
-          {mystoriess.length == 0 ? (
+          {mystoriess && mystoriess.length == 0 ? (
             <Modal isOpen={isOpen} onClose={clear}>
               <ModalOverlay />
               <ModalContent style={{ height: "70%" }}>
@@ -204,12 +214,26 @@ export default function Stories() {
             <Modal onClose={onClose} size={size} isOpen={isOpen}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Modal Title</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>{/* <Lorem count={2} /> */}</ModalBody>
-                <ModalFooter>
-                  <Button onClick={onClose}>Close</Button>
-                </ModalFooter>
+                {/* <ModalHeader>Modal Title</ModalHeader> */}
+                <span style={{color:"white",fontSize:"30px"}}><ModalCloseButton /></span>
+                <ModalBody style={{padding:"200px",backgroundColor:"gray",height:"100vh",display:"fixed"}}>
+                <Slide>
+                {mystoriess?mystoriess && mystoriess.map((picc)=>{
+                  return(
+                    
+            <div className="each-slide-effect" style={{width:"100%",display:"flex",justifyContent:"center"}}>
+                <div style={{ 'backgroundImage': `url(${"picc.story"})` }}>
+                    <span style={{display:"flex",color:"white",fontSize:"20px"}}><img style={{height:"40px",borderRadius:"50%"}} src={userData.profilePic}/>&nbsp;&nbsp;{userData.username}</span>
+                    <img style={{height:"400px"}} src={picc.story}/>
+                </div>
+            </div>
+       
+                  )
+                }):""}  </Slide>
+                 </ModalBody>
+                {/* <ModalFooter> */}
+                  {/* <Button onClick={onClose}>Close</Button> */}
+                {/* </ModalFooter> */}
               </ModalContent>
             </Modal>
           )}

@@ -2,5 +2,16 @@
     display: grid;
     justify-content: center;
     place-content: center;
-    background-color: yellow;
+    background-color: rgb(128, 128, 114);
+}
+
+
+.mainAuth{
+    width: 50vw;
+}
+
+@media(max-width:600px){
+    .mainAuth{
+        width: 100vw;
+    }
 }

@@ -1,13 +1,13 @@
 import axios from "axios";
 import React from "react";
-
+import { Api_url } from "../apiurl";
 
 export const postShareAction=(data)=>async (dispatch)=>{
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
     dispatch({type:"POSTSHARE_REQUEST"})
 
     try{
-       const response=await axios.post("http://localhost:5000/apii/newPost",{
+       const response=await axios.post(`${Api_url}/apii/newPost`,{
          userId:data.userid,
          image:data.pic,
          username:data.username,
@@ -27,7 +27,7 @@ export const currentUserPost=(id)=>async(dispatch)=>{
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
    dispatch({type:"GETPOST_REQUEST"})
    try{
-      const response=await axios.get(`http://localhost:5000/apii/getpost?userId=${id}`,{
+      const response=await axios.get(`${Api_url}/apii/getpost?userId=${id}`,{
          headers:{
             authorization:tok
          }
@@ -43,7 +43,7 @@ export const deletePost=(id)=>async(dispatch)=>{
    const tok=JSON.parse(localStorage.getItem("Auth"))?JSON.parse(localStorage.getItem("Auth")).token:""
    dispatch({type:"DELETEPOST_REQUEST"})
    try{
-        const response=await axios.post("http://localhost:5000/apii/deletepost",{id:id},{
+        const response=await axios.post(`${Api_url}/apii/deletepost`,{id:id},{
          headers:{
             authorization:tok
          }
@@ -58,7 +58,7 @@ export const deletePost=(id)=>async(dispatch)=>{
 export const createStory=(data)=>async(dispatch)=>{
    dispatch({type:"CREATESTORY_REQUEST"})
    try{
-      const response=await axios.post("http://localhost:5000/apii/createStory",{
+      const response=await axios.post(`${Api_url}/apii/createStory`,{
          story:data.story,
          userId:data.userId
       })
@@ -74,7 +74,7 @@ export const getstory=(userId)=>async(dispatch)=>{
    dispatch({type:"GETSTORY_REQUEST"})
    try{
       
-      const response=await axios.get(`http://localhost:5000/apii/stories?userId=${userId}`)
+      const response=await axios.get(`${Api_url}/apii/stories?userId=${userId}`)
       const otherstory= await response?response.data?response.data.others:[]:[] 
       const mystory=await response?response.data?response.data.my:[]:[]
      dispatch({type:"GETSTORY_SUCCESS",data:{otherstory,mystory}})

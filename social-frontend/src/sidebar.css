@@ -1,0 +1,11 @@
+/* @media(max-width:600px){
+    .first{
+        display: none;
+        
+    }
+} */
+
+.first{
+    position: relative;
+    /* display: flex; */
+}

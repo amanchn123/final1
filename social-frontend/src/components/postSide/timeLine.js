@@ -3,19 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "./timeLine.css";
 import { Container, Row } from "react-bootstrap";
-import {FcLike} from 'react-icons/fc'
+import { FcLike } from "react-icons/fc";
 import { getUser } from "../../actions/authAction";
-
+import { Api_url } from "../../apiurl";
+import { Link } from "react-router-dom";
+import {AiOutlineHeart} from 'react-icons/ai'
 
 
 
 export default function TimeLine() {
   const tok = JSON.parse(localStorage.getItem("Auth"))
-  ? JSON.parse(localStorage.getItem("Auth")).token
-  : "";
-
-
-
+    ? JSON.parse(localStorage.getItem("Auth")).token
+    : "";
 
   const userData = useSelector((state) =>
     state.ReducerLogin
@@ -25,11 +24,10 @@ export default function TimeLine() {
       : "nodata"
   );
 
-  useEffect(()=>{
-      dispatch(getUser())
-  },[])
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
 
-  
   const getUsers = useSelector((state) =>
     state.getAllUserReducer.data
       ? state.getAllUserReducer.data
@@ -37,7 +35,6 @@ export default function TimeLine() {
         : []
       : []
   );
-
 
   const currentUser = getUsers.filter((people) =>
     people._id.includes(userData._id)
@@ -54,29 +51,30 @@ export default function TimeLine() {
       : "k"
   );
 
-  useEffect(()=>{
-    getPost()
-  },[postID])
+  useEffect(() => {
+    getPost();
+  }, [postID]);
 
-  const likes=async(id)=>{
-    try{
-      const response=await axios.put(`http://localhost:5000/apii/likes?id=${id}`,{
-        currentUserId:postID
-      },{
-        headers:{
-          authorization:tok
+  const likes = async (id) => {
+    try {
+      const response = await axios.put(
+        `${Api_url}/apii/likes?id=${id}`,
+        {
+          currentUserId: postID,
+        },
+        {
+          headers: {
+            authorization: tok,
+          },
         }
-      })
-
-    }catch{
-     
-    }
-  }
+      );
+    } catch {}
+  };
 
   const getPost = async () => {
     try {
       const respose = await axios.get(
-        `http://localhost:5000/apii/timelinePost?userId=${postID}`,
+        `${Api_url}/apii/timelinePost?userId=${postID}`,
         {
           headers: {
             authorization: tok,
@@ -84,9 +82,7 @@ export default function TimeLine() {
         }
       );
       setPost(respose.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -94,28 +90,51 @@ export default function TimeLine() {
   }, []);
 
   return (
-    <div className=" maincontainers" style={{width:"80%",marginLeft:"80px",padding:"30px"}}>
-      {post.length !== 0
-        ? post.map((ele) => {
-            const all = getUsers.filter((person) =>
-              person._id.includes(ele.userId)
-            );
+    <div
+      className=" maincontainer"
+      style={{
+        height: post.length == 0 ? "100vh" : "100%",
+        width: "80%",
+        padding: "30px"
+        
+      }}
+    >
+      {post.length !== 0 ? (
+        post.map((ele) => {
+          const all = getUsers.filter((person) =>
+            person._id.includes(ele.userId)
+          );
 
-            return (
-              <div className="shadow-2xl"
-                style={{padding:"20px",width: "100%",justifyContent:"center",display:"grid", borderRadius: "5px", marginTop: "15px",boxShadow:"inset 0 0 10px #000000" }}
+          return (
+            <div
+              className="shadow-2xl "
+              style={{
+                padding: "20px",
+                width: "100%",
+                justifyContent: "center",
+                display: "grid",
+                borderRadius: "5px",
+                marginTop: "15px",
+                boxShadow: "inset 0 0 10px #000000",
+              }}
+            >
+              <Link
+                to={{
+                  pathname: "/userData",
+                  search: `?id=${all[0] ? all[0]._id : ""}`,
+                }}
               >
                 <div
                   className="Row"
                   style={{
-                    display:"flex",
-                    height:"100%",
-                    width:"50%",
-                    placeItems:"center", 
-                    color:"white",
+                    display: "flex",
+                    height: "100%",
+                    width: "50%",
                     placeItems: "center",
-                    fontSize:"20px",
-                    marginBottom:"3%"
+                    color: "white",
+                    placeItems: "center",
+                    fontSize: "20px",
+                    marginBottom: "3%",
                   }}
                 >
                   <img
@@ -126,21 +145,60 @@ export default function TimeLine() {
                       position: "relative",
                       borderRadius: "50%",
                     }}
-                  /> &nbsp;
+                  />{" "}
+                  &nbsp;
                   <span>{ele.username}</span>
                 </div>
-                <div className="shadow-2xl" style={{ width: "100%",display:"grid" }}>
-                  <img style={{ width: "100%" }} src={ele.image} />
-                  <div>
-                  <span onClick={()=>likes(ele._id)} style={{display:"flex",placeItems:"center",fontSize:"120%",cursor:"pointer",color:"white"}}><FcLike />{ele.likes.length}</span>
-                  <span style={{color:"white"}}><b>{ele.username}</b> &nbsp;{ele.desc} </span>
+              </Link>
+              <div
+                className="shadow-2xl"
+                style={{ width: "100%", display: "grid" }}
+              >
+                <img style={{ width: "100%" }} src={ele.image} />
+                <div>
+                  <span
+                    onClick={() => likes(ele._id)}
+                    style={{
+                      display: "flex",
+                      placeItems: "center",
+                      fontSize: "120%",
+                      cursor: "pointer",
+                      color: "white",
+                    }}
+                  >
+                    {ele.likes.includes(postID)?<FcLike />:<AiOutlineHeart />}
+                    
+                    {ele.likes.length}
+                  </span>
+                  <span style={{ color: "white" }}>
+                    <b>{ele.username}</b> &nbsp;{ele.desc}{" "}
+                  </span>
                 </div>
-                </div>
-                <hr style={{color:"white",backgroundColor:"white",border:"3px solid white"}}/>
               </div>
-            );
-          })
-        : ""}
+              <hr
+                style={{
+                  color: "white",
+                  backgroundColor: "white",
+                  border: "3px solid white",
+                }}
+              />
+            </div>
+          );
+        })
+      ) : (
+        <h3
+          style={{
+            color: "white",
+            display: "flex",
+            alignSelf:"center",
+            left: "350px",
+          }}
+        >
+          Welcome to instagram clone
+          <br />
+          Follow someone to see timeline{" "}
+        </h3>
+      )}
     </div>
   );
 }

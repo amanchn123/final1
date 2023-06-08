@@ -3,3 +3,26 @@
 @tailwind utilities;
 
  */
+
+.min{
+    display: grid;
+    background-color: gray;
+}
+
+ @media(max-width:600px){
+    .sidee{
+        /* height: 5rem; */
+        position: fixed;
+        width: 100%;
+        height: 3rem;
+        bottom: 0%;
+        background-color: rgb(48, 46, 46);
+    }
+ }
+
+ @media(width>600px){
+    .sidee{
+        display: none;
+    }
+ }
+ 
